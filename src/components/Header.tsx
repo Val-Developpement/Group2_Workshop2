@@ -95,6 +95,14 @@ export default function Header() {
                         Mon profil
                       </DropdownMenuItem>
                     </Link>
+                    {/* Lien Admin - visible seulement pour les admins */}
+                    {user.isAdmin && (
+                      <Link href='/admin' passHref>
+                        <DropdownMenuItem className='cursor-pointe'>
+                          Pannel Admin
+                        </DropdownMenuItem>
+                      </Link>
+                    )}
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
