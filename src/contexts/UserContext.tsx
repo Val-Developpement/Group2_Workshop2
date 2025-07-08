@@ -8,6 +8,7 @@ interface User {
   firstName: string;
   lastName: string;
   email: string;
+  isAdmin: boolean;
 }
 
 interface UserContextType {
@@ -69,6 +70,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
               first_name: currentUser.user_metadata?.full_name?.split(' ')[0] ?? '',
               last_name: currentUser.user_metadata?.full_name?.split(' ')[1] ?? '',
               email: currentUser.email,
+              isAdmin: false, // Par défaut, les nouveaux utilisateurs ne sont pas admin
             })
             .select()
             .maybeSingle();
@@ -88,6 +90,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           firstName: userProfile.first_name,
           lastName: userProfile.last_name,
           email: userProfile.email,
+          isAdmin: userProfile.isAdmin || false,
         });
       } catch (error) {
         console.error('Erreur inattendue lors de la récupération du profil :', error);
