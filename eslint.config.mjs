@@ -10,7 +10,20 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.config({
+    extends: ['next'],
+    settings: {
+      next: {
+        rootDir: 'src',
+      },
+    },
+    rules: {
+      'react-hooks/exhaustive-deps': 'off',
+      '@next/next/no-async-client-component': 'error',
+      'react/no-unescaped-entities': 0,
+    },
+    // ignorePatterns: ['**/ui/**'],
+  }),
 ];
 
 export default eslintConfig;
