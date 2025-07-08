@@ -26,22 +26,19 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        // Récupère l'utilisateur connecté
+       
         const { data: { user: currentUser }, error: authError } = await supabase.auth.getUser();
         
         if (authError) {
-          console.log('Auth error:', authError.message);
           setLoading(false);
           return;
         }
         
-        if (!currentUser) {
-          console.log('Aucun utilisateur connecté');
+        if (!currentUser) {  
           setLoading(false);
           return;
         }
 
-        // Essaie de récupérer le profil, sans erreur si aucune ligne
         const {
           data: profile,
           error: profileError,
@@ -49,7 +46,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           .from('profiles')
           .select('*')
           .eq('id', currentUser.id)
-          .maybeSingle();  // <-- utilise maybeSingle pour éviter l'erreur quand il n'y a pas de ligne
+          .maybeSingle();  
 
         if (profileError) {
           console.error('Erreur lors de la récupération du profil :', profileError);
@@ -60,9 +57,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         let userProfile = profile;
 
         if (!userProfile) {
-          console.log('Pas de profil existant, création en cours…');
+          
 
-          // Création du profil si nécessaire, et récupération du nouveau profil
+         
           const { data: insertedProfile, error: insertError } = await supabase
             .from('profiles')
             .insert({
@@ -70,7 +67,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
               first_name: currentUser.user_metadata?.full_name?.split(' ')[0] ?? '',
               last_name: currentUser.user_metadata?.full_name?.split(' ')[1] ?? '',
               email: currentUser.email,
-              isAdmin: false, // Par défaut, les nouveaux utilisateurs ne sont pas admin
+              isAdmin: false, 
             })
             .select()
             .maybeSingle();
@@ -84,7 +81,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           userProfile = insertedProfile!;
         }
 
-        // On peut maintenant mettre à jour le contexte
+        
         setUser({
           id: userProfile.id,
           firstName: userProfile.first_name,
