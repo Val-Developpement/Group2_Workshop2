@@ -49,6 +49,7 @@ export const signUpAction = async (formData: FormData) => {
       first_name: first_name,
       last_name: last_name,
       email: email,
+      isAdmin: false, // Par défaut, les nouveaux utilisateurs ne sont pas admin
     },
   ]);
 
@@ -64,7 +65,7 @@ export const signUpAction = async (formData: FormData) => {
     return encodedRedirect(
       'success',
       '/profile',
-      '',
+      'Merci de vous être inscrit. Veuillez vous connecter.',
     );
   }
 };
