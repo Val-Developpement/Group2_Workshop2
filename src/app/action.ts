@@ -36,20 +36,20 @@ export const signUpAction = async (formData: FormData) => {
   });
 
   const user = data.user;
-  console.log(user);
+  
 
   if (!user) {
     return encodedRedirect('error', '/register', 'User creation failed');
   }
 
-  // 🔹 Étape 2 : Création du profil utilisateur dans la table "profiles"
+ 
   const { error: profileError } = await supabase.from('profiles').insert([
     {
-      id: user.id, // Associer le profil à l'ID de l'utilisateur Supabase
+      id: user.id, 
       first_name: first_name,
       last_name: last_name,
       email: email,
-      isAdmin: false, // Par défaut, les nouveaux utilisateurs ne sont pas admin
+      isAdmin: false, 
     },
   ]);
 

@@ -20,27 +20,17 @@ export async function middleware(req: NextRequest) {
   );
 
   try {
-    // Met à jour la session si besoin
+   
     const { data: { session }, error } = await supabase.auth.getSession();
-    
-    // Si pas d'erreur, on continue
-    if (error) {
-      console.log('Middleware auth error:', error.message);
+    } catch (error) {
     }
-  } catch (error) {
-    // Gestion silencieuse des erreurs de session
-    console.log('Middleware session error:', error);
-  }
 
   return res;
 }
 
 export const config = {
   matcher: [
-    /*
-     * Appliquer le middleware à toutes les routes sauf les assets statiques.
-     * Tu peux adapter ce filtre selon tes besoins.
-     */
+    
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
