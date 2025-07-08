@@ -64,10 +64,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <nav className="mt-6">
-            <NavItem icon={<User size={18} />} text="Utilisateurs" sidebarOpen={sidebarOpen} />
-            <NavItem icon={<Tag size={18} />} text="Catégories"  sidebarOpen={sidebarOpen} />
-            <NavItem icon={<Package size={18} />} text="Produits"  sidebarOpen={sidebarOpen} />
-            <NavItem icon={<ShoppingCart size={18} />} text="Commandes"  sidebarOpen={sidebarOpen} />
+            <NavItem href='/admin' icon={<User size={18} />} text="Utilisateurs" sidebarOpen={sidebarOpen} />
+            <NavItem href='/admin/categories' icon={<Tag size={18} />} text="Catégories"  sidebarOpen={sidebarOpen} />
+            <NavItem href='/admin/products' icon={<Package size={18} />} text="Produits"  sidebarOpen={sidebarOpen} />
+            <NavItem href='/admin/orders' icon={<ShoppingCart size={18} />} text="Commandes"  sidebarOpen={sidebarOpen} />
           
           {/* Ajoutez d'autres éléments de navigation ici */}
         </nav>
@@ -148,20 +148,25 @@ function NavItem({
   text,
   active = false,
   sidebarOpen,
+  href,
 }: {
   icon: React.ReactNode;
   text: string;
   active?: boolean;
   sidebarOpen: boolean;
+  href: string;
 }) {
   return (
-    <button
+    <Link
       className={`flex items-center w-full p-3 ${
         active ? 'bg-gray-900' : 'hover:bg-gray-700'
       }`}
+      href={href}
     >
+    
       <span>{icon}</span>
       {sidebarOpen && <span className="ml-3">{text}</span>}
-    </button>
+      
+    </Link>
   );
 }
