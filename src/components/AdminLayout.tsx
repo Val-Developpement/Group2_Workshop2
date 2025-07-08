@@ -64,7 +64,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <nav className="mt-6">
-            <NavItem href='/admin' icon={<User size={18} />} text="Utilisateurs" sidebarOpen={sidebarOpen} />
+            <NavItem href='/admin/users' icon={<User size={18} />} text="Utilisateurs" sidebarOpen={sidebarOpen} />
             <NavItem href='/admin/categories' icon={<Tag size={18} />} text="Catégories"  sidebarOpen={sidebarOpen} />
             <NavItem href='/admin/products' icon={<Package size={18} />} text="Produits"  sidebarOpen={sidebarOpen} />
             <NavItem href='/admin/orders' icon={<ShoppingCart size={18} />} text="Commandes"  sidebarOpen={sidebarOpen} />
@@ -80,6 +80,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Header */}
         <header className="bg-white  shadow-sm z-10">
           <div className="flex items-center justify-between px-6 py-4">
+
+            
           <Button variant='outline' onClick={() => router.push('/')}>
                 Retour à l'accueil
               </Button>
