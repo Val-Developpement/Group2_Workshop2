@@ -7,8 +7,9 @@ import { CheckCircle, ShoppingBag, Home, Package } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { OrderWithItems } from '@/types/orders';
+import { Suspense } from "react";
 
-export default function SuccessPage() {
+function SuccessPageContent() {
   const { clearCart } = useCart();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
@@ -131,5 +132,24 @@ export default function SuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function SuccessPageFallback() {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lime-500 mx-auto"></div>
+        <p className="mt-4 text-gray-600">Chargement...</p>
+      </div>
+    </div>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={<SuccessPageFallback />}>
+      <SuccessPageContent />
+    </Suspense>
   );
 }
