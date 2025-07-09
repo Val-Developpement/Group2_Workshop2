@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Header from '@/components/Header';
 import AdminProtected from '@/components/AdminProtected';
 import { UserProvider } from '@/contexts/UserContext';
+import { CartProvider } from '@/contexts/CartContext';
 import '@/styles/tailwind.css';
 import AdminLayout from '@/components/AdminLayout';
 
@@ -39,11 +40,13 @@ export default function RootLayout({
       <body className='flex flex-col '>
         
           <UserProvider>
-            <AdminProtected>
-              <AdminLayout>
-              {children}
-              </AdminLayout>
-            </AdminProtected>
+            <CartProvider>
+              <AdminProtected>
+                <AdminLayout>
+                {children}
+                </AdminLayout>
+              </AdminProtected>
+            </CartProvider>
   
           </UserProvider>
         
