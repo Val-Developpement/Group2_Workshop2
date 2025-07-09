@@ -68,6 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <NavItem href='/admin/categories' icon={<Tag size={18} />} text="Catégories"  sidebarOpen={sidebarOpen} />
             <NavItem href='/admin/products' icon={<Package size={18} />} text="Produits"  sidebarOpen={sidebarOpen} />
             <NavItem href='/admin/orders' icon={<ShoppingCart size={18} />} text="Commandes"  sidebarOpen={sidebarOpen} />
+            <NavItem href='/admin/signalements' icon={<Bell size={18} />} text="🚨 Signalements"  sidebarOpen={sidebarOpen} />
           
           {/* Ajoutez d'autres éléments de navigation ici */}
         </nav>
