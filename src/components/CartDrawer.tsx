@@ -26,26 +26,57 @@ export default function CartDrawer() {
     }
 
     try {
-      const response = await fetch("/api/create-checkout-session", {
+      
+      const orderResponse = await fetch("/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           items: state.items.map(item => ({
-            productId: item.stripe_product_id,
+            product_id: item.id,
+            stripe_product_id: item.stripe_product_id,
+            name: item.name,
+            price: Math.round(item.price * 100), 
+            quantity: item.quantity,
+            image_url: item.image_url
+          })),
+        }),
+      });
+
+      if (!orderResponse.ok) {
+        const errorData = await orderResponse.json();
+        toast.error(errorData.error || "Erreur lors de la création de la commande");
+        return;
+      }
+
+      const { order_id } = await orderResponse.json();
+
+      
+      const checkoutResponse = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId: order_id,
+          items: state.items.map(item => ({
+            stripe_product_id: item.stripe_product_id,
             quantity: item.quantity,
           })),
         }),
       });
 
-      if (response.ok) {
-        const { url } = await response.json();
+      if (checkoutResponse.ok) {
+        const { url } = await checkoutResponse.json();
+        
+        clearCart();
         window.location.href = url;
       } else {
         toast.error("Erreur lors de la création de la session de paiement");
       }
     } catch (error) {
+      console.error("Erreur lors du checkout:", error);
       toast.error("Erreur lors de l'achat");
     }
   };

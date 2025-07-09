@@ -34,6 +34,9 @@ export async function POST(req: Request) {
       product: product.id,
     });
 
+    await stripe.products.update(product.id, {
+      default_price: stripePrice.id,
+    });
     
     return NextResponse.json({
       productId: product.id,
