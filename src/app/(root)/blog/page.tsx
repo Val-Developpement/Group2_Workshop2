@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,7 +29,7 @@ interface Article {
   }[] | null;
 }
 
-export default function BlogPage() {
+function BlogContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
@@ -198,107 +199,126 @@ export default function BlogPage() {
       </div>
 
       {/* Articles */}
-      {articles && articles.length > 0 ? (
+      {articles.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-gray-500 text-lg">Aucun article trouvé.</p>
+        </div>
+      ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {articles.map((article: Article) => (
+          {articles.map((article) => (
             <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <Link href={`/blog/${article.slug}`}>
-                <div className="aspect-video relative bg-gray-100">
-                  {article.image_url ? (
-                    <Image
-                      src={article.image_url}
-                      alt={article.image_alt || article.titre}
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      <span className="text-6xl">📝</span>
-                    </div>
-                  )}
-                </div>
-              </Link>
+              <div className="relative h-48">
+                {article.image_url ? (
+                  <Image
+                    src={article.image_url}
+                    alt={article.image_alt || article.titre}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-400">Pas d'image</span>
+                  </div>
+                )}
+              </div>
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
                   <Badge variant="secondary">{article.categorie}</Badge>
-                  <div className="flex items-center text-sm text-gray-500 gap-1">
-                    <Eye className="w-4 h-4" />
+                  <div className="flex items-center text-sm text-gray-500">
+                    <Eye className="w-4 h-4 mr-1" />
                     {article.vues}
                   </div>
                 </div>
-                <CardTitle className="line-clamp-2 hover:text-lime-600 transition-colors">
-                  <Link href={`/blog/${article.slug}`}>
-                    {article.titre}
-                  </Link>
-                </CardTitle>
+                <CardTitle className="text-lg line-clamp-2">{article.titre}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 line-clamp-3 mb-4">
-                  {article.extrait}
-                </p>
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center gap-1">
-                    <User className="w-4 h-4" />
-                    {article.profiles && article.profiles.length > 0 ? 
-                      `${article.profiles[0].first_name} ${article.profiles[0].last_name}` : 
-                      'Anonyme'
+                <p className="text-gray-600 mb-4 line-clamp-3">{article.extrait}</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center text-sm text-gray-500">
+                    <User className="w-4 h-4 mr-1" />
+                    {article.profiles && article.profiles.length > 0 
+                      ? `${article.profiles[0].first_name} ${article.profiles[0].last_name}`
+                      : 'Auteur inconnu'
                     }
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
+                  <div className="flex items-center text-sm text-gray-500">
+                    <Calendar className="w-4 h-4 mr-1" />
                     {new Date(article.published_at).toLocaleDateString('fr-FR')}
                   </div>
                 </div>
+                <Link href={`/blog/${article.slug}`} className="block mt-4">
+                  <Button className="w-full">Lire l'article</Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <span className="text-6xl mb-4 block">🔍</span>
-          <h3 className="text-xl font-semibold mb-2">Aucun article trouvé</h3>
-          <p className="text-gray-600">
-            Essayez de modifier vos critères de recherche ou parcourez toutes les catégories
-          </p>
         </div>
       )}
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex justify-center items-center space-x-2">
           <Button
             variant="outline"
             disabled={page <= 1}
-            asChild={page > 1}
+            onClick={() => {
+              const params = new URLSearchParams(searchParams.toString());
+              params.set('page', (page - 1).toString());
+              router.push(`/blog?${params.toString()}`);
+            }}
           >
-            {page > 1 ? (
-              <Link href={`/blog?page=${page - 1}${categorie ? `&categorie=${categorie}` : ''}${search ? `&search=${search}` : ''}`}>
-                Précédent
-              </Link>
-            ) : (
-              'Précédent'
-            )}
+            Précédent
           </Button>
           
-          <span className="text-sm text-gray-600 mx-4">
-            Page {page} sur {totalPages}
-          </span>
-          
+          <div className="flex space-x-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+              <Button
+                key={pageNum}
+                variant={pageNum === page ? "default" : "outline"}
+                size="sm"
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams.toString());
+                  params.set('page', pageNum.toString());
+                  router.push(`/blog?${params.toString()}`);
+                }}
+              >
+                {pageNum}
+              </Button>
+            ))}
+          </div>
+
           <Button
             variant="outline"
             disabled={page >= totalPages}
-            asChild={page < totalPages}
+            onClick={() => {
+              const params = new URLSearchParams(searchParams.toString());
+              params.set('page', (page + 1).toString());
+              router.push(`/blog?${params.toString()}`);
+            }}
           >
-            {page < totalPages ? (
-              <Link href={`/blog?page=${page + 1}${categorie ? `&categorie=${categorie}` : ''}${search ? `&search=${search}` : ''}`}>
-                Suivant
-              </Link>
-            ) : (
-              'Suivant'
-            )}
+            Suivant
           </Button>
         </div>
       )}
     </div>
+  );
+}
+
+function BlogPageFallback() {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lime-500 mx-auto mb-4"></div>
+        <p>Chargement du blog...</p>
+      </div>
+    </div>
+  );
+}
+
+export default function BlogPage() {
+  return (
+    <Suspense fallback={<BlogPageFallback />}>
+      <BlogContent />
+    </Suspense>
   );
 } 
