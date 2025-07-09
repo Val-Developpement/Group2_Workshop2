@@ -157,7 +157,7 @@ function BlogContent() {
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          🐾 Blog Conseils & Actualités
+          Blog Conseils & Actualités
         </h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Découvrez nos conseils d'experts pour prendre soin de vos compagnons à quatre pattes
@@ -247,7 +247,7 @@ function BlogContent() {
                   </div>
                 </div>
                 <Link href={`/blog/${article.slug}`} className="block mt-4">
-                  <Button className="w-full">Lire l'article</Button>
+                  <Button className="w-full bg-lime-500 hover:bg-lime-600 text-white">Lire l'article</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -261,6 +261,7 @@ function BlogContent() {
           <Button
             variant="outline"
             disabled={page <= 1}
+            className="border-lime-500 text-lime-600 hover:bg-lime-50"
             onClick={() => {
               const params = new URLSearchParams(searchParams.toString());
               params.set('page', (page - 1).toString());
@@ -276,6 +277,7 @@ function BlogContent() {
                 key={pageNum}
                 variant={pageNum === page ? "default" : "outline"}
                 size="sm"
+                className={pageNum === page ? "bg-lime-500 hover:bg-lime-600 text-white" : "border-lime-500 text-lime-600 hover:bg-lime-50"}
                 onClick={() => {
                   const params = new URLSearchParams(searchParams.toString());
                   params.set('page', pageNum.toString());
@@ -290,6 +292,7 @@ function BlogContent() {
           <Button
             variant="outline"
             disabled={page >= totalPages}
+            className="border-lime-500 text-lime-600 hover:bg-lime-50"
             onClick={() => {
               const params = new URLSearchParams(searchParams.toString());
               params.set('page', (page + 1).toString());
