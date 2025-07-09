@@ -1,6 +1,7 @@
 import { Inter, Lexend } from 'next/font/google';
 import clsx from 'clsx';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Caveat } from 'next/font/google';
 
 import { UserProvider } from '@/contexts/UserContext';
@@ -52,8 +53,9 @@ export default function RootLayout({
             <CartProvider>
               <Header />
               {children}
+               <Footer />
             </CartProvider>
-
+        
           </UserProvider>
         
       </body>
