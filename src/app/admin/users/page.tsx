@@ -38,7 +38,7 @@ export default function AdminUsersPage() {
 
   const fetchProfiles = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
+    const { data, error } = await supabase.from("profiles").select("*");
 
     if (error) {
       toast.error("Erreur lors du chargement des utilisateurs");

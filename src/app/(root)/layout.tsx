@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Caveat } from 'next/font/google';
 
 import { UserProvider } from '@/contexts/UserContext';
+import { CartProvider } from '@/contexts/CartContext';
 import '@/styles/tailwind.css';
 
 
@@ -48,9 +49,13 @@ export default function RootLayout({
       <body className='flex flex-col '>
         
           <UserProvider>
-            <Header />
-            {children}
-            <Footer />
+
+            <CartProvider>
+              <Header />
+              {children}
+               <Footer />
+            </CartProvider>
+        
           </UserProvider>
         
       </body>
