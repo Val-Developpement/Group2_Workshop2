@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter, ShoppingCart, Star, Heart, Eye } from "lucide-react";
 import { toast } from "sonner";
+import { useCart } from "@/contexts/CartContext";
 
 interface Product {
   id: string;
@@ -34,6 +35,7 @@ interface Category {
 
 export default function StorePage() {
   const supabase = createClient();
+  const { addItem } = useCart();
   
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -127,36 +129,17 @@ export default function StorePage() {
   };
 
   const addToCart = (product: Product) => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url,
+      stripe_product_id: product.stripe_product_id,
+    });
     toast.success(`${product.name} ajouté au panier !`);
   };
 
-  const handlePurchase = async (product: Product) => {
-    if (!product.stripe_product_id) {
-      toast.error("Ce produit n'est pas encore disponible à l'achat");
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId: product.stripe_product_id,
-        }),
-      });
-
-      if (response.ok) {
-        const { url } = await response.json();
-        window.location.href = url;
-      } else {
-        toast.error("Erreur lors de la création de la session de paiement");
-      }
-    } catch (error) {
-      toast.error("Erreur lors de l'achat");
-    }
-  };
+  
 
   if (loading) {
     return (
@@ -297,7 +280,7 @@ export default function StorePage() {
                   />
                 </Button>
                 {product.categories && (
-                  <Badge className="absolute top-2 left-2 bg-blue-600 text-white">
+                  <Badge className="absolute top-2 left-2 bg-lime-500 text-white">
                     {product.categories.name}
                   </Badge>
                 )}
@@ -322,19 +305,11 @@ export default function StorePage() {
                 <div className="flex gap-2">
                   <Button 
                     onClick={() => addToCart(product)}
-                    variant="outline"
-                    className="flex-1"
-                  >
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    Panier
-                  </Button>
-                  <Button 
-                    onClick={() => handlePurchase(product)}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    className="flex-1 bg-lime-500 hover:bg-lime-600 text-white"
                     disabled={!product.stripe_product_id}
                   >
-                    <Eye className="h-4 w-4 mr-2" />
-                    Acheter
+                     <ShoppingCart className="h-4 w-4 mr-2" />
+                     Ajouter au panier
                   </Button>
                 </div>
               </CardContent>
