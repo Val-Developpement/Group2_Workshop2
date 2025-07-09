@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
 
 interface Profile {
-  id: string; // match Supabase auth.user id
+  id: string; 
   first_name: string;
   last_name: string;
   email: string;
