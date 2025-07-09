@@ -47,6 +47,36 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      keyframes: {
+        'bounce-slow': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-30px)' },
+        },
+        'bounce-slow2': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(20px)' },
+        },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-8deg)' },
+          '50%': { transform: 'rotate(8deg)' },
+        },
+        wiggle2: {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(10deg)' },
+          '75%': { transform: 'rotate(-10deg)' },
+        },
+        'fade-in': {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+      },
+      animation: {
+        'bounce-slow': 'bounce-slow 2.5s infinite',
+        'bounce-slow2': 'bounce-slow2 2.8s infinite',
+        'wiggle': 'wiggle 1.2s infinite',
+        'wiggle2': 'wiggle2 1.5s infinite',
+        'fade-in': 'fade-in 1.2s ease-in',
+      },
     },
   },
   plugins: [],

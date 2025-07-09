@@ -11,6 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from '@/components/ui/dropdown-menu';
+
   import { useState } from 'react';
   import { useRouter } from 'next/navigation';
   import { createClient } from '@/utils/supabase/client';
@@ -19,6 +20,7 @@ import {
   import { signOutAction } from '@/app/action';
   import CartDrawer from './CartDrawer';
 import { ShoppingCart } from "lucide-react";
+
 
 export default function Header() {
     const supabase = createClient();
@@ -34,7 +36,6 @@ export default function Header() {
         await signOutAction();
       } catch (error) {
         console.error('Erreur lors de la déconnexion:', error);
-        
         await supabase.auth.signOut();
         router.push('/login');
       } finally {
@@ -43,23 +44,27 @@ export default function Header() {
     };
 
   return (
-    <>
-      <nav className="bg-white shadow-md px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          
-          <Link href="#" className="text-2xl font-bold text-gray-800">APwAP</Link>
+<
+ <>
+    <nav className="bg-white shadow-lg fixed top-0 left-0 w-full z-50 transition-all">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        
+        <Link href="/" className="flex items-center gap-2 text-3xl font-extrabold text-lime-600 tracking-tight select-none">
+          <span className="text-4xl">🐾</span>
+          <span style={{fontFamily: 'var(--font-caveat)'}}>APwAP</span>
+        </Link>
 
-          
-          <div className="hidden md:flex space-x-6">
-            <Link href="/" className="text-gray-600 hover:text-gray-900">Accueil</Link>
-            <Link href="/shop" className="text-gray-600 hover:text-gray-900">Boutique</Link>
-            <Link href="/contact" className="text-gray-600 hover:text-gray-900">Contact</Link>
-          </div>
+        
+        <div className="hidden md:flex space-x-8 text-lg font-semibold">
+          <Link href="/" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Accueil</Link>
+          <Link href="/shop" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Boutique</Link>
+          <Link href="/contact" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Contact</Link>
+        </div>
 
-          
-          <div className="flex items-center space-x-4">
-            
-            <button 
+    
+        <div className="flex items-center space-x-4">
+         
+          <button 
               onClick={toggleCart}
               className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
@@ -72,55 +77,58 @@ export default function Header() {
               )}
             </button>
 
-            
-            {loading ? (
-                  <Button variant='outline' disabled>
-                    Chargement...
-                  </Button>
-                ) : user ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant='outline'>
-                        {user.firstName} {user.lastName}
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuGroup>
-                        <Link href='/profile' passHref>
-                          <DropdownMenuItem className='cursor-pointer'>
-                            Mon profil
-                          </DropdownMenuItem>
-                        </Link>
-                        
-                        {user.isAdmin && (
-                          <Link href='/admin' passHref>
-                            <DropdownMenuItem className='cursor-pointe'>
-                              Pannel Admin
-                            </DropdownMenuItem>
-                          </Link>
-                        )}
-                      </DropdownMenuGroup>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        onClick={handleSignOut}
-                        disabled={isSigningOut}
-                        className='cursor-pointer text-red-600 dark:text-red-400'
-                      >
-                        {isSigningOut ? 'Déconnexion...' : 'Déconnexion'}
+          {loading ? (
+            <Button variant='outline' disabled className="rounded-full px-6 py-2 text-lg bg-lime-100 text-lime-700">
+              Chargement...
+            </Button>
+          ) : user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant='outline' className="rounded-full px-6 py-2 text-lg bg-lime-100 text-lime-700">
+                  {user.firstName} {user.lastName}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <Link href='/profile' passHref>
+                    <DropdownMenuItem className='cursor-pointer'>
+                      Mon profil
+                    </DropdownMenuItem>
+                  </Link>
+                  {user.isAdmin && (
+                    <Link href='/admin' passHref>
+                      <DropdownMenuItem className='cursor-pointer'>
+                        Pannel Admin
                       </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <Button variant='outline' onClick={() => router.push('/login')}>
-                    Se connecter
-                  </Button>
-                )}
-          </div>
+                    </Link>
+                  )}
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  disabled={isSigningOut}
+                  className='cursor-pointer text-red-600 dark:text-red-400'
+                >
+                  {isSigningOut ? 'Déconnexion...' : 'Déconnexion'}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button variant='default' className="rounded-full bg-lime-500 hover:bg-lime-600 text-white px-8 py-2 text-lg font-bold shadow-md transition-transform hover:scale-105" onClick={() => router.push('/login')}>
+              Se connecter
+            </Button>
+          )}
         </div>
-      </nav>
-      <CartDrawer />
+
+       
+        <div className="md:hidden flex items-center">
+         
+        </div>
+      </div>
+    </nav>
+ <CartDrawer />
     </>
   )
 }
