@@ -44,7 +44,7 @@ export default function Header() {
     };
 
   return (
-<
+
  <>
     <nav className="bg-white shadow-lg fixed top-0 left-0 w-full z-50 transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
