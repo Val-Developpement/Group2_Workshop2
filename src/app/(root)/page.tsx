@@ -37,7 +37,7 @@ export default function Home() {
               Découvre des conseils, des services et des histoires pour rendre ton compagnon heureux, chaque jour !
             </p>
             <Button size="lg" className="bg-lime-400 hover:bg-lime-500 text-gray-900 font-semibold px-8 py-4 text-lg md:text-xl shadow-lg transition-transform hover:scale-105" style={{fontFamily: 'var(--font-inter)'}}>
-              Découvrir la sélection
+              Découvrir la boutique
             </Button>
           </div>
         </section>
