@@ -58,8 +58,9 @@ export default function Header() {
         <div className="hidden md:flex space-x-8 text-lg font-semibold">
           <Link href="/" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Accueil</Link>
           <Link href="/shop" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Boutique</Link>
+          <Link href="/blog" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Blog</Link>
           <Link href="/contact" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Contact</Link>
-          <Link href="/signaler-maltraitance" className="text-red-600 hover:text-red-700 transition-colors hover:underline underline-offset-8 font-bold">Signaler</Link>
+          <Link href="/signaler-maltraitance" className="text-red-600 hover:text-red-700 transition-colors hover:underline underline-offset-8 font-bold">🚨 Signaler</Link>
         </div>
 
     

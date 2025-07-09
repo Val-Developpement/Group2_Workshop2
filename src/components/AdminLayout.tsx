@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, X, Bell, User, Settings, LogOut, Tag, Package, ShoppingCart } from 'lucide-react';
+import { Menu, X, Bell, User, Settings, LogOut, Tag, Package, ShoppingCart, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -68,7 +68,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <NavItem href='/admin/categories' icon={<Tag size={18} />} text="Catégories"  sidebarOpen={sidebarOpen} />
             <NavItem href='/admin/products' icon={<Package size={18} />} text="Produits"  sidebarOpen={sidebarOpen} />
             <NavItem href='/admin/orders' icon={<ShoppingCart size={18} />} text="Commandes"  sidebarOpen={sidebarOpen} />
-            <NavItem href='/admin/signalements' icon={<Bell size={18} />} text="🚨 Signalements"  sidebarOpen={sidebarOpen} />
+            <NavItem href='/admin/blog' icon={<FileText size={18} />} text="Blog"  sidebarOpen={sidebarOpen} />
+            <NavItem href='/admin/signalements' icon={<Bell size={18} />} text="Signalements"  sidebarOpen={sidebarOpen} />
           
           {/* Ajoutez d'autres éléments de navigation ici */}
         </nav>
