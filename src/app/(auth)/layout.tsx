@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import Header from '@/components/Header';
 
 import { UserProvider } from '@/contexts/UserContext';
+import { CartProvider } from '@/contexts/CartContext';
 import '@/styles/tailwind.css';
 
 
@@ -39,12 +40,14 @@ export default function RootLayout({
       <body className='flex flex-col '>
      
 <UserProvider>
+          <CartProvider>
             <Header />
             <div className="flex h-screen w-screen items-center justify-center overflow-hidden">
   <div className="w-full max-w-md px-4">
     {children}
   </div>
 </div>
+          </CartProvider>
           
           </UserProvider>
         
