@@ -58,6 +58,7 @@ export default function Header() {
         <div className="hidden md:flex space-x-8 text-lg font-semibold">
           <Link href="/" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Accueil</Link>
           <Link href="/shop" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Boutique</Link>
+          <Link href="/services" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Services</Link>  
           <Link href="/blog" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Blog</Link>
           <Link href="/quiz-animal" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Quiz Animal</Link>
           <Link href="/contact" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Contact</Link>
