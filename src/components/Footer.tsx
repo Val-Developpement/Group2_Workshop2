@@ -140,9 +140,9 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder="Votre adresse email"
-                className="flex-1 md:w-80 px-4 py-3 bg-gray-800 border border-gray-600 rounded-l-lg text-white placeholder-gray-400 focus:outline-none focus:border-lime-500"
+                className="flex-1  px-4 mr-2 bg-gray-800 border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-lime-500"
               />
-              <Button className="bg-lime-500 hover:bg-lime-600 text-white px-6 py-3 rounded-r-lg font-semibold">
+              <Button className="bg-lime-500 hover:bg-lime-600 text-white ">
                 S'abonner
               </Button>
             </div>
