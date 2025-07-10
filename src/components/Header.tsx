@@ -80,13 +80,13 @@ export default function Header() {
             </button>
 
           {loading ? (
-            <Button variant='outline' disabled className="rounded-full px-6 py-2 text-lg bg-lime-100 text-lime-700">
+            <Button variant='outline' disabled className=" bg-lime-100 text-lime-700">
               Chargement...
             </Button>
           ) : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant='outline' className="rounded-full px-6 py-2 text-lg bg-lime-100 text-lime-700">
+                <Button variant='outline' className=" bg-lime-100 text-lime-700">
                   {user.firstName} {user.lastName}
                 </Button>
               </DropdownMenuTrigger>
@@ -118,7 +118,7 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button variant='default' className="rounded-full bg-lime-500 hover:bg-lime-600 text-white px-8 py-2 text-lg font-bold shadow-md transition-transform hover:scale-105" onClick={() => router.push('/login')}>
+            <Button variant='default' className=" bg-lime-500 hover:bg-lime-600 text-white " onClick={() => router.push('/login')}>
               Se connecter
             </Button>
           )}
