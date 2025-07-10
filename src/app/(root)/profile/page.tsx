@@ -5,6 +5,8 @@ import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { OrderWithItems } from "@/types/orders";
+import router from "next/router";
 
 interface Profile {
   id: string;
@@ -312,16 +314,255 @@ export default function ProfilePage() {
           )}
 
           {activeTab === "orders" && (
-            <div>
-              <h2 className="text-lg font-bold mb-4 text-center text-black">Historique des commandes</h2>
-              <div className="bg-gray-100 border rounded-lg p-4 text-black text-center text-sm">
-                {/* À remplacer par la vraie liste de commandes */}
-                Aucun historique pour le moment.
-              </div>
-            </div>
+
+            <OrdersHistory />
+
           )}
         </main>
       </div>
+    </div>
+  );
+}
+
+// Composant pour l'historique des commandes
+function OrdersHistory() {
+  const [orders, setOrders] = useState<OrderWithItems[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedOrder, setSelectedOrder] = useState<OrderWithItems | null>(null);
+  const [showInvoice, setShowInvoice] = useState(false);
+  const [invoiceData, setInvoiceData] = useState<any>(null);
+  const [invoiceLoading, setInvoiceLoading] = useState(false);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch('/api/orders');
+        if (response.ok) {
+          const data = await response.json();
+          setOrders(data.orders || []);
+        } else {
+          toast.error("Erreur lors du chargement des commandes");
+        }
+      } catch (error) {
+        toast.error("Erreur lors du chargement des commandes");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'paid': return 'bg-green-100 text-green-800 border-green-200';
+      case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'shipped': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'delivered': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200';
+      case 'failed': return 'bg-red-100 text-red-800 border-red-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'paid': return 'Payée';
+      case 'pending': return 'En attente';
+      case 'shipped': return 'Expédiée';
+      case 'delivered': return 'Livrée';
+      case 'cancelled': return 'Annulée';
+      case 'failed': return 'Échouée';
+      default: return status;
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const formatPrice = (price: number) => {
+    // Les prix sont stockés en centimes, donc on divise par 100
+    const priceInEuros = price / 100;
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(priceInEuros);
+  };
+
+  
+  const getTrackingInfo = (order: OrderWithItems) => {
+    switch (order.status) {
+      case 'pending':
+        return {
+          step: 1,
+          title: 'Commande confirmée',
+          description: 'Votre commande a été reçue et est en cours de traitement',
+          icon: '📋'
+        };
+      case 'paid':
+        return {
+          step: 2,
+          title: 'Paiement reçu',
+          description: 'Le paiement a été confirmé, préparation en cours',
+          icon: '💳'
+        };
+      case 'shipped':
+        return {
+          step: 3,
+          title: 'Expédiée',
+          description: 'Votre commande a été expédiée',
+          icon: '📦'
+        };
+      case 'delivered':
+        return {
+          step: 4,
+          title: 'Livrée',
+          description: 'Votre commande a été livrée',
+          icon: '✅'
+        };
+      case 'cancelled':
+        return {
+          step: 0,
+          title: 'Annulée',
+          description: 'Cette commande a été annulée',
+          icon: '❌'
+        };
+      case 'failed':
+        return {
+          step: 0,
+          title: 'Échouée',
+          description: 'Le paiement a échoué',
+          icon: '⚠️'
+        };
+      default:
+        return {
+          step: 1,
+          title: 'En cours',
+          description: 'Traitement en cours',
+          icon: '⏳'
+        };
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-lime-500"></div>
+        <p className="text-lime-700 mt-2">Chargement des commandes...</p>
+      </div>
+    );
+  }
+
+  if (orders.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <div className="w-24 h-24 mx-auto mb-4 bg-lime-100 rounded-full flex items-center justify-center">
+          <svg className="w-12 h-12 text-lime-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        </div>
+        <h2 className="text-xl font-bold text-lime-700 mb-2">Aucune commande</h2>
+        <p className="text-lime-600 mb-6">Vous n'avez pas encore passé de commande.</p>
+        <Button 
+          onClick={() => router.push('/shop')} 
+          className="bg-lime-500 hover:bg-lime-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition-colors duration-150"
+        >
+          Découvrir nos produits
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h2 className="text-xl font-bold mb-6 text-center text-lime-700">Historique des commandes</h2>
+      <div className="space-y-6">
+        {orders.map((order) => (
+          <div key={order.id} className="bg-white border border-lime-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+            
+            <div className="p-6 border-b border-lime-100">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-lime-800">Commande #{order.id.slice(-8)}</h3>
+                  <p className="text-sm text-lime-600">Passée le {formatDate(order.created_at)}</p>
+                </div>
+                <div className="flex flex-col sm:items-end gap-2">
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(order.status)}`}>
+                    {getStatusText(order.status)}
+                  </span>
+                  <p className="text-lg font-bold text-lime-700">{formatPrice(order.total_amount)}</p>
+                </div>
+              </div>
+            </div>
+
+            
+            <div className="p-6 border-b border-lime-100 bg-lime-50">
+              <h4 className="font-medium text-lime-800 mb-4">Suivi de commande</h4>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-lime-500 rounded-full flex items-center justify-center text-white text-lg">
+                    {getTrackingInfo(order).icon}
+                  </div>
+                  <div>
+                    <p className="font-medium text-lime-800">{getTrackingInfo(order).title}</p>
+                    <p className="text-sm text-lime-600">{getTrackingInfo(order).description}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+           
+            <div className="p-6">
+              <div className="space-y-4">
+                {order.order_items.map((item) => (
+                  <div key={item.id} className="flex items-center gap-4 p-4 bg-lime-50 rounded-lg">
+                    {item.image_url && (
+                      <img 
+                        src={item.image_url} 
+                        alt={item.name}
+                        className="w-16 h-16 object-cover rounded-lg border border-lime-200"
+                      />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium text-lime-800 truncate">{item.name}</h4>
+                      <p className="text-sm text-lime-600">Quantité: {item.quantity}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-lime-700">{formatPrice(item.price * item.quantity)}</p>
+                      <p className="text-xs text-lime-500">{formatPrice(item.price)} l'unité</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+             
+              {order.shipping_address && (
+                <div className="mt-6 p-4 bg-lime-50 rounded-lg">
+                  <h4 className="font-medium text-lime-800 mb-2">Adresse de livraison</h4>
+                  <div className="text-sm text-lime-700">
+                    <p>{order.shipping_address.line1}</p>
+                    {order.shipping_address.line2 && <p>{order.shipping_address.line2}</p>}
+                    <p>{order.shipping_address.postal_code} {order.shipping_address.city}</p>
+                    <p>{order.shipping_address.country}</p>
+                  </div>
+                </div>
+              )}
+
+            
+            </div>
+          </div>
+        ))}
+      </div>
+
+      
     </div>
   );
 }
