@@ -34,6 +34,7 @@ export default function Home() {
               Ici, chaque chien remue la queue et chaque chat ronronne de plaisir.<br/>
               Découvre des conseils, des services et des histoires pour rendre ton compagnon heureux, chaque jour !
             </p>
+
             <Button size="lg" className="bg-lime-400 hover:bg-lime-500 text-gray-900" style={{fontFamily: 'var(--font-inter)'}}>
               Découvrir la sélection
             </Button>
