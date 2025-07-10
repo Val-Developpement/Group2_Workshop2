@@ -154,7 +154,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-lime-100 pt-16">
+    <div className="flex min-h-screen items-center justify-center bg-white pt-16">
       <div className="flex w-full max-w-3xl bg-white rounded-xl shadow-lg overflow-hidden my-16">
         {/* Navigation latérale */}
         <nav className="w-52 bg-lime-500 border-r flex flex-col py-8 px-4 gap-3">
@@ -185,28 +185,28 @@ export default function ProfilePage() {
           {activeTab === "infos" && (
             <div>
               <div className="flex flex-col items-center mb-6">
-                <div className="relative flex items-center justify-center w-32 h-32 rounded-xl bg-lime-100 shadow-inner mx-auto mb-2">
+                <div className="relative flex items-center justify-center w-32 h-32 rounded-xl bg-gray-100 shadow-inner mx-auto mb-2">
                   {form.avatar_url ? (
                     <img
                       src={form.avatar_url}
                       alt="Photo de profil"
-                      className="w-24 h-24 object-cover rounded-xl border-4 border-lime-200 shadow-lg transition-transform duration-200 group-hover:scale-105"
+                      className="w-24 h-24 object-cover rounded-xl border-4 border-gray-200 shadow-lg transition-transform duration-200 group-hover:scale-105"
                     />
                   ) : (
                     <img
                       src="/avatar-default.svg"
                       alt="Avatar par défaut"
-                      className="w-24 h-24 object-cover rounded-xl border-4 border-lime-200 shadow-lg"
+                      className="w-24 h-24 object-cover rounded-xl border-4 border-gray-200 shadow-lg"
                     />
                   )}
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploading}
-                    className="absolute bottom-2 right-2 bg-white border border-lime-300 rounded-full p-2 shadow-md hover:bg-lime-100 transition-colors duration-150 focus:outline-none"
+                    className="absolute bottom-2 right-2 bg-white border border-gray-300 rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors duration-150 focus:outline-none"
                     title="Changer la photo"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-lime-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6-6m2 2a2.828 2.828 0 11-4-4 2.828 2.828 0 014 4z" />
                     </svg>
                   </button>
@@ -220,11 +220,11 @@ export default function ProfilePage() {
                   />
                   {uploading && (
                     <div className="absolute inset-0 bg-white/60 flex items-center justify-center rounded-xl">
-                      <span className="text-xs text-lime-700">Upload...</span>
+                      <span className="text-xs text-black">Upload...</span>
                     </div>
                   )}
                 </div>
-                <h1 className="text-xl font-bold mt-4 text-center text-lime-700">Mon profil</h1>
+                <h1 className="text-xl font-bold mt-4 text-center text-black">Mon profil</h1>
               </div>
               <form
                 onSubmit={e => {
@@ -234,69 +234,69 @@ export default function ProfilePage() {
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-lime-700 font-medium mb-1">Prénom</label>
+                    <label className="block text-black font-medium mb-1">Prénom</label>
                     <Input
                       name="first_name"
                       value={form.first_name}
                       onChange={handleChange}
                       required
-                      className="h-10 text-base px-3 w-full border border-lime-200 focus:border-lime-500 focus:ring-lime-500"
+                      className="h-10 text-base px-3 w-full border border-gray-200 focus:border-black focus:ring-black text-black bg-white"
                     />
                   </div>
                   <div>
-                    <label className="block text-lime-700 font-medium mb-1">Nom</label>
+                    <label className="block text-black font-medium mb-1">Nom</label>
                     <Input
                       name="last_name"
                       value={form.last_name}
                       onChange={handleChange}
                       required
-                      className="h-10 text-base px-3 w-full border border-lime-200 focus:border-lime-500 focus:ring-lime-500"
+                      className="h-10 text-base px-3 w-full border border-gray-200 focus:border-black focus:ring-black text-black bg-white"
                     />
                   </div>
                   <div>
-                    <label className="block text-lime-700 font-medium mb-1">Email</label>
+                    <label className="block text-black font-medium mb-1">Email</label>
                     <Input
                       name="email"
                       value={form.email}
                       disabled
                       readOnly
-                      className="h-10 text-base px-3 w-full bg-lime-100 border border-lime-200 text-lime-600"
+                      className="h-10 text-base px-3 w-full bg-gray-100 border border-gray-200 text-black"
                     />
                   </div>
                   <div>
-                    <label className="block text-lime-700 font-medium mb-1">Téléphone</label>
+                    <label className="block text-black font-medium mb-1">Téléphone</label>
                     <Input
                       name="phone"
                       value={form.phone}
                       onChange={handleChange}
-                      className="h-10 text-base px-3 w-full border border-lime-200 focus:border-lime-500 focus:ring-lime-500"
+                      className="h-10 text-base px-3 w-full border border-gray-200 focus:border-black focus:ring-black text-black bg-white"
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-lime-700 font-medium mb-1">Adresse</label>
+                    <label className="block text-black font-medium mb-1">Adresse</label>
                     <Input
                       name="adresse"
                       value={form.adresse}
                       onChange={handleChange}
-                      className="h-10 text-base px-3 w-full border border-lime-200 focus:border-lime-500 focus:ring-lime-500"
+                      className="h-10 text-base px-3 w-full border border-gray-200 focus:border-black focus:ring-black text-black bg-white"
                     />
                   </div>
                   <div>
-                    <label className="block text-lime-700 font-medium mb-1">Code Postal</label>
+                    <label className="block text-black font-medium mb-1">Code Postal</label>
                     <Input
                       name="code_postal"
                       value={form.code_postal}
                       onChange={handleChange}
-                      className="h-10 text-base px-3 w-full border border-lime-200 focus:border-lime-500 focus:ring-lime-500"
+                      className="h-10 text-base px-3 w-full border border-gray-200 focus:border-black focus:ring-black text-black bg-white"
                     />
                   </div>
                   <div>
-                    <label className="block text-lime-700 font-medium mb-1">Ville</label>
+                    <label className="block text-black font-medium mb-1">Ville</label>
                     <Input
                       name="ville"
                       value={form.ville}
                       onChange={handleChange}
-                      className="h-10 text-base px-3 w-full border border-lime-200 focus:border-lime-500 focus:ring-lime-500"
+                      className="h-10 text-base px-3 w-full border border-gray-200 focus:border-black focus:ring-black text-black bg-white"
                     />
                   </div>
                 </div>
@@ -314,7 +314,9 @@ export default function ProfilePage() {
           )}
 
           {activeTab === "orders" && (
+
             <OrdersHistory />
+
           )}
         </main>
       </div>
