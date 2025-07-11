@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -44,13 +44,13 @@ export default function CookiesPage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // Charger les préférences au montage
-  useState(() => {
+  useEffect(() => {
     const savedPreferences = localStorage.getItem(COOKIE_PREFERENCES_KEY);
     if (savedPreferences) {
       setPreferences(JSON.parse(savedPreferences));
     }
-  });
+  }, []);
+  
 
   const handleSavePreferences = async () => {
     setIsLoading(true);
