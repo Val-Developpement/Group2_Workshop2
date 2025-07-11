@@ -46,14 +46,20 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: `Produit "${item.name}" sans stripe_product_id` }, { status: 400 });
       }
 
-      const product = await stripe.products.retrieve(item.stripe_product_id, { expand: ['default_price'] });
-      const price = product.default_price as Stripe.Price;
+      // Pour les services, utiliser le stripe_price_id spécifique
+      if (item.stripe_price_id) {
+        lineItems.push({ price: item.stripe_price_id, quantity: item.quantity });
+      } else {
+        // Pour les produits, utiliser le prix par défaut
+        const product = await stripe.products.retrieve(item.stripe_product_id, { expand: ['default_price'] });
+        const price = product.default_price as Stripe.Price;
 
-      if (!price) {
-        return NextResponse.json({ error: `Pas de prix pour ${item.name}` }, { status: 400 });
+        if (!price) {
+          return NextResponse.json({ error: `Pas de prix pour ${item.name}` }, { status: 400 });
+        }
+
+        lineItems.push({ price: price.id, quantity: item.quantity });
       }
-
-      lineItems.push({ price: price.id, quantity: item.quantity });
     }
 
     const session = await stripe.checkout.sessions.create({

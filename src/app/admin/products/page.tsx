@@ -252,7 +252,7 @@ export default function AdminProductsPage() {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="price" className="text-sm font-medium">Prix (€)</Label>
+                  <Label htmlFor="price" className="text-sm font-medium">Prix (AED)</Label>
                   <Input
                     id="price"
                     type="number"
@@ -393,7 +393,7 @@ export default function AdminProductsPage() {
                     <span className="text-gray-400 text-sm">Aucune catégorie</span>
                   )}
                 </TableCell>
-                <TableCell className="font-semibold">{product.price}€</TableCell>
+                <TableCell className="font-semibold">{product.price} AED</TableCell>
                 <TableCell>
                   {product.stripe_product_id ? (
                     <div className="flex items-center gap-2">

@@ -42,7 +42,7 @@ export default function StorePage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [priceRange, setPriceRange] = useState<number[]>([0, 1000]);
+  const [priceRange, setPriceRange] = useState<number[]>([0, 5000]);
   const [sortBy, setSortBy] = useState<string>("newest");
   const [wishlist, setWishlist] = useState<string[]>([]);
 
@@ -231,20 +231,20 @@ export default function StorePage() {
                 {/* Prix */}
                 <div>
                   <label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Prix maximum: {priceRange[1]}€
+                    Prix maximum: {priceRange[1]} AED
                   </label>
                   <input
                     type="range"
                     min="0"
-                    max="1000"
-                    step="10"
+                    max="5000"
+                    step="50"
                     value={priceRange[1]}
                     onChange={(e) => setPriceRange([0, parseInt(e.target.value)])}
                     className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                   />
                   <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>0€</span>
-                    <span>{priceRange[1]}€</span>
+                    <span>0 AED</span>
+                    <span>{priceRange[1]} AED</span>
                   </div>
                 </div>
 
@@ -299,7 +299,7 @@ export default function StorePage() {
                     ))}
                     <span className="text-sm text-gray-500 ml-1">(4.8)</span>
                   </div>
-                  <span className="text-xl font-bold text-gray-900">{product.price}€</span>
+                  <span className="text-xl font-bold text-gray-900">{product.price} AED</span>
                 </div>
                 
                 <div className="flex gap-2">

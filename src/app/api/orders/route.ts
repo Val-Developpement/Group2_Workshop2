@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       .insert({
         user_id: user.id,
         total_amount,
-        currency: "eur",
+        currency: "aed",
         shipping_address,
         billing_address,
         customer_email: customer_email || user.email,
@@ -42,12 +42,14 @@ export async function POST(req: Request) {
 
     const orderItems = items.map(item => ({
       order_id: order.id,
-      product_id: item.product_id,
+      product_id: item.product_id || null, 
       stripe_product_id: item.stripe_product_id,
+      stripe_price_id: item.stripe_price_id || null, 
       name: item.name,
       price: item.price,
       quantity: item.quantity,
-      image_url: item.image_url
+      image_url: item.image_url,
+     
     }));
 
     const { error: itemsError } = await supabase.from("order_items").insert(orderItems);

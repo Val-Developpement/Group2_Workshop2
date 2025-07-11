@@ -161,7 +161,7 @@ export default function AdminOrdersPage() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {(order.total_amount / 100).toFixed(2)}€
+                      {(order.total_amount / 100).toFixed(2)} AED
                     </TableCell>
                     <TableCell>
                       <Badge className={statusColors[order.status]}>
@@ -227,7 +227,7 @@ export default function AdminOrdersPage() {
                       </Badge>
                     </div>
                     <div><span className="text-gray-600">Date:</span> {new Date(selectedOrder.created_at).toLocaleString("fr-FR")}</div>
-                    <div><span className="text-gray-600">Total:</span> {(selectedOrder.total_amount / 100).toFixed(2)}€</div>
+                    <div><span className="text-gray-600">Total:</span> {(selectedOrder.total_amount / 100).toFixed(2)} AED</div>
                   </div>
                 </div>
                 <div>
@@ -268,8 +268,8 @@ export default function AdminOrdersPage() {
                           <div className="text-sm text-gray-600">Quantité: {item.quantity}</div>
                         </div>
                         <div className="text-right">
-                          <div className="font-medium">{(item.price * item.quantity / 100).toFixed(2)}€</div>
-                          <div className="text-sm text-gray-600">{(item.price / 100).toFixed(2)}€ l'unité</div>
+                          <div className="font-medium">{(item.price * item.quantity / 100).toFixed(2)} AED</div>
+                          <div className="text-sm text-gray-600">{(item.price / 100).toFixed(2)} AED l'unité</div>
                         </div>
                       </div>
                     ))}
