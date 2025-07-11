@@ -130,10 +130,10 @@ const QUIZ_OPTIONS = {
     { value: 'disponible', label: 'Très disponible', description: '> 5h par jour', emoji: '🕘' }
   ],
   budget: [
-    { value: 'petit', label: 'Budget serré', description: '< 50€/mois', emoji: '💰' },
-    { value: 'moyen', label: 'Budget moyen', description: '50-100€/mois', emoji: '💵' },
-    { value: 'confortable', label: 'Budget confortable', description: '100-200€/mois', emoji: '💸' },
-    { value: 'large', label: 'Budget large', description: '> 200€/mois', emoji: '💎' }
+            { value: 'petit', label: 'Budget serré', description: '< 200 AED/mois', emoji: '💰' },
+        { value: 'moyen', label: 'Budget moyen', description: '200-400 AED/mois', emoji: '💵' },
+        { value: 'confortable', label: 'Budget confortable', description: '400-800 AED/mois', emoji: '💸' },
+        { value: 'large', label: 'Budget large', description: '> 800 AED/mois', emoji: '💎' }
   ],
   family: [
     { value: 'seul', label: 'Seul(e)', description: 'Vous vivez seul(e)', emoji: '👤' },

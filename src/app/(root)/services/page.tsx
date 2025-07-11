@@ -1,19 +1,22 @@
 'use client';
 
 import React from 'react';
+import { useCart } from '@/contexts/CartContext';
+import { toast } from 'sonner';
 
 const services = [
   {
     id: 'garderie',
-    title: 'Garderie d’Animaux',
+    title: 'Garderie d\'Animaux',
     color: 'blue',
     image: 'https://images.unsplash.com/photo-1525253086316-d0c936c814f8?auto=format&fit=crop&w=600&q=80', // Deux petits chiens ensemble, ambiance garderie
     description: "Un espace sécurisé et ludique pour vos animaux, avec jeux, promenades et surveillance professionnelle.",
+    stripe_product_id: 'prod_Sf07P1ywPWBT2B',
     prices: [
-      { label: 'Jour', value: '250 AED', desc: 'Idéal pour une garde ponctuelle ou une journée d’activité.' },
-      { label: 'Semaine', value: '1500 AED', desc: 'Pour une semaine complète de jeux et de soins.' },
-      { label: 'Mois', value: '5000 AED', desc: 'Parfait pour les séjours prolongés ou les besoins réguliers.' },
-      { label: 'Année', value: '48000 AED', desc: 'La solution économique pour une tranquillité d’esprit toute l’année.' },
+      { label: 'Jour', value: '250 AED', price: 250, stripe_price_id: 'price_1Rjg7UPZx6VQhfzi1Hlik7N3', desc: 'Idéal pour une garde ponctuelle ou une journée d\'activité.' },
+      { label: 'Semaine', value: '1500 AED', price: 1500, stripe_price_id: 'price_1Rjg7UPZx6VQhfziZpLchWEK', desc: 'Pour une semaine complète de jeux et de soins.' },
+      { label: 'Mois', value: '5000 AED', price: 5000, stripe_price_id: 'price_1Rjg7UPZx6VQhfzipvUmLFeS', desc: 'Parfait pour les séjours prolongés ou les besoins réguliers.' },
+      { label: 'Année', value: '48000 AED', price: 48000, stripe_price_id: 'price_1Rjg7UPZx6VQhfzizfVFmrzq', desc: 'La solution économique pour une tranquillité d\'esprit toute l\'année.' },
     ],
     location: 'Dubai',
   },
@@ -23,11 +26,12 @@ const services = [
     color: 'lime',
     image: 'https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=600&q=80', // Chien et chat détendus, bien-être
     description: "Offrez à votre compagnon un moment de détente : toilettage, massages et soins bien-être.",
+    stripe_product_id: 'prod_Sf09p4Ld8ISWrB',
     prices: [
-      { label: '30 min', value: '400 AED', desc: 'Soin express pour une petite pause bien-être.' },
-      { label: '1h', value: '700 AED', desc: 'Massage complet et relaxation profonde.' },
-      { label: '2h', value: '1200 AED', desc: 'Programme spa complet avec soins personnalisés.' },
-      { label: '3h', value: '1800 AED', desc: 'Le summum du bien-être pour votre animal.' },
+      { label: '30 min', value: '400 AED', price: 400, stripe_price_id: 'price_1Rjg8oPZx6VQhfzi3bFJdba6', desc: 'Soin express pour une petite pause bien-être.' },
+      { label: '1h', value: '700 AED', price: 700, stripe_price_id: 'price_1Rjg98PZx6VQhfzi12QYKDhZ', desc: 'Massage complet et relaxation profonde.' },
+      { label: '2h', value: '1200 AED', price: 1200, stripe_price_id: 'price_1Rjg9JPZx6VQhfziY0XZ54A3', desc: 'Programme spa complet avec soins personnalisés.' },
+      { label: '3h', value: '1800 AED', price: 1800, stripe_price_id: 'price_1Rjg9TPZx6VQhfzihbEbTS3J', desc: 'Le summum du bien-être pour votre animal.' },
     ],
     location: 'Dubai',
   },
@@ -37,23 +41,38 @@ const services = [
     color: 'amber',
     image: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80', // Chien dans un lit/cadre luxueux, ambiance hôtel
     description: "Séjour 5 étoiles pour chiens : suites climatisées, promenades sur la plage, room service et webcam live.",
+    stripe_product_id: 'prod_Sf0B1W0QUIXEmH',
     prices: [
-      { label: 'Jour', value: '800 AED', desc: 'Pour un week-end ou une courte escapade à Dubaï.' },
-      { label: 'Semaine', value: '5000 AED', desc: 'Une semaine de luxe et de confort pour votre chien.' },
-      { label: 'Mois', value: '18000 AED', desc: 'Un séjour prolongé avec tous les services inclus.' },
-      { label: 'Année', value: '200000 AED', desc: 'Le summum du confort et du luxe pour votre chien toute l’année.' },
+      { label: 'Jour', value: '800 AED', price: 800, stripe_price_id: 'price_1RjgAiPZx6VQhfzi3E71FYvX', desc: 'Pour un week-end ou une courte escapade à Dubaï.' },
+      { label: 'Semaine', value: '5000 AED', price: 5000, stripe_price_id: 'price_1RjgAzPZx6VQhfziHAU2xzAl', desc: 'Une semaine de luxe et de confort pour votre chien.' },
+      { label: 'Mois', value: '18000 AED', price: 18000, stripe_price_id: 'price_1RjgBCPZx6VQhfzisuFCx4N7', desc: 'Un séjour prolongé avec tous les services inclus.' },
+      { label: 'Année', value: '200000 AED', price: 200000, stripe_price_id: 'price_1RjgBPPZx6VQhfzihVGCiuhz', desc: 'Le summum du confort et du luxe pour votre chien toute l\'année.' },
     ],
     location: 'Dubai',
   },
 ];
 
 export default function Services() {
+  const { addItem } = useCart();
+
   // Scroll vers la section
   const handleScroll = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  };
+
+  const handleAddToCart = (service: any, priceOption: any) => {
+    addItem({
+      id: `${service.id}-${priceOption.label.toLowerCase().replace(/\s+/g, '-')}`,
+      name: `${service.title} - ${priceOption.label}`,
+      price: priceOption.price,
+      image_url: service.image,
+      stripe_product_id: service.stripe_product_id,
+      stripe_price_id: priceOption.stripe_price_id,
+    });
+    toast.success(`${service.title} - ${priceOption.label} ajouté au panier !`);
   };
 
   return (
@@ -151,13 +170,18 @@ export default function Services() {
                     <div className="text-2xl font-extrabold mb-1 text-gray-900">{p.value}</div>
                     <div className="text-xs text-gray-500 mb-2">{service.location}</div>
                     <div className="text-xs text-gray-600 text-center mb-4">{p.desc}</div>
-                    <button className={`mt-auto px-4 py-2 rounded font-semibold shadow transition text-white w-full ${
-                      service.color === 'blue'
-                        ? 'bg-blue-500 hover:bg-blue-600'
-                        : service.color === 'lime'
-                        ? 'bg-lime-500 hover:bg-lime-600'
-                        : 'bg-amber-500 hover:bg-amber-600'
-                    }`}>Ajouter au panier</button>
+                    <button
+                      onClick={() => handleAddToCart(service, p)}
+                      className={`mt-auto px-4 py-2 rounded font-semibold shadow transition text-white w-full ${
+                        service.color === 'blue'
+                          ? 'bg-blue-500 hover:bg-blue-600'
+                          : service.color === 'lime'
+                          ? 'bg-lime-500 hover:bg-lime-600'
+                          : 'bg-amber-500 hover:bg-amber-600'
+                      }`}
+                    >
+                      Ajouter au panier
+                    </button>
                   </div>
                 ))}
               </div>
