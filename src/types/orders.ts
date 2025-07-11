@@ -50,10 +50,13 @@ export interface CreateOrderData {
   items: Array<{
     product_id?: string;
     stripe_product_id: string;
+    stripe_price_id?: string;
     name: string;
     price: number;
     quantity: number;
     image_url?: string;
+    type?: 'product' | 'service';
+    duration?: string;
   }>;
   shipping_address?: Order['shipping_address'];
   billing_address?: Order['billing_address'];

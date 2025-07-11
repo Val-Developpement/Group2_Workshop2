@@ -390,11 +390,11 @@ function OrdersHistory() {
 
   const formatPrice = (price: number) => {
     // Les prix sont stockés en centimes, donc on divise par 100
-    const priceInEuros = price / 100;
+    const priceInAED = price / 100;
     return new Intl.NumberFormat('fr-FR', {
       style: 'currency',
-      currency: 'EUR'
-    }).format(priceInEuros);
+      currency: 'AED'
+    }).format(priceInAED);
   };
 
   

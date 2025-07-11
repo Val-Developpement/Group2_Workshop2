@@ -81,7 +81,7 @@ function SuccessPageContent() {
                 </div>
                 <div>
                   <span className="text-gray-600">Montant total:</span>
-                  <p className="font-medium">{(order.total_amount / 100).toFixed(2)}€</p>
+                  <p className="font-medium">{(order.total_amount / 100).toFixed(2)} AED</p>
                 </div>
                 <div>
                   <span className="text-gray-600">Statut:</span>
@@ -100,7 +100,7 @@ function SuccessPageContent() {
                     {order.order_items.map((item) => (
                       <div key={item.id} className="flex justify-between items-center text-sm">
                         <span>{item.name} x{item.quantity}</span>
-                        <span className="font-medium">{(item.price * item.quantity / 100).toFixed(2)}€</span>
+                        <span className="font-medium">{(item.price * item.quantity / 100).toFixed(2)} AED</span>
                       </div>
                     ))}
                   </div>
