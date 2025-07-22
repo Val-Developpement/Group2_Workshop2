@@ -14,9 +14,9 @@ export default function Home() {
   return (
     <>
       <main className="min-h-screen">
-        {/* Hero Section avec vidéo de fond */}
+            
         <section className="relative h-[70vh] md:h-screen flex items-center justify-center overflow-hidden">
-          {/* Vidéo de fond */}
+         
           <video
             className="absolute inset-0 w-full h-full object-cover z-0"
             src="/puppy.mp4"
@@ -25,9 +25,7 @@ export default function Home() {
             muted
             playsInline
           />
-          {/* Overlay sombre */}
           <div className="absolute inset-0 bg-black/60 z-10"></div>
-          {/* Contenu texte */}
           <div className="relative z-20 flex flex-col items-center justify-center w-full h-full text-center px-4">
             <h2 className="text-3xl md:text-5xl font-bold text-lime-300 mb-4 tracking-wider" style={{fontFamily: 'var(--font-caveat)'}}>
               {t.welcomeTitle}
@@ -38,15 +36,17 @@ export default function Home() {
             <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto font-semibold" style={{fontFamily: 'var(--font-inter)'}}>
               {t.welcomeDescription}
             </p>
+
             <Link href="/shop">
               <Button size="lg" className="bg-lime-400 hover:bg-lime-500 text-gray-900 font-semibold px-8 py-4 text-lg md:text-xl shadow-lg transition-transform hover:scale-105" style={{fontFamily: 'var(--font-inter)'}}>
                 {t.discoverShop}
               </Button>
             </Link>
+
           </div>
         </section>
 
-        {/* Section carrousel interactif "Le savais-tu ?" */}
+       
         <section className="py-16 bg-gradient-to-r from-blue-50 to-lime-50">
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-12">
@@ -58,7 +58,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Framework 360° revisité avec design professionnel */}
+       
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-20">
@@ -106,7 +106,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Exercice */}
+             
               <div className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                 <div className="relative bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
@@ -136,7 +136,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Santé */}
+             
               <div className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                 <div className="relative bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
@@ -166,7 +166,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Comportement */}
+             
               <div className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                 <div className="relative bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
@@ -196,7 +196,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Environnement */}
+             
               <div className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                 <div className="relative bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
@@ -226,7 +226,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Relation */}
+             
               <div className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                 <div className="relative bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
@@ -257,19 +257,20 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Call to action */}
+            
             <div className="text-center">
               <p className="text-lg text-gray-600 mb-8">
                 {t.frameworkConclusion}
               </p>
+
               <Button size="lg" className="bg-lime-500 hover:bg-lime-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all">
                 {t.discoverMethod}
-              </Button>
+
             </div>
           </div>
         </section>
 
-        {/* CTA Section fun */}
+        
         <section className="py-20 bg-gradient-to-r from-pink-400 to-blue-400 text-white animate-fade-in">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 drop-shadow-lg">
@@ -279,10 +280,10 @@ export default function Home() {
 {t.ctaDescription}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" className="bg-white text-pink-600 hover:bg-gray-100 px-8 py-3 shadow-md transition-transform hover:scale-105">
+              <Button size="lg" variant="secondary" className="bg-white text-pink-600 hover:bg-gray-100">
                 Commencer l’aventure
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-pink-600 px-8 py-3 transition-transform hover:scale-105">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-pink-600">
                 En savoir plus
               </Button>
             </div>
@@ -293,7 +294,7 @@ export default function Home() {
   );
 }
 
-// Composant Carrousel à ajouter avant la fonction Home
+
 function FunFactsCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { t } = useTranslation();
@@ -345,7 +346,7 @@ function FunFactsCarousel() {
 
   return (
     <div className="relative">
-      {/* Carrousel principal */}
+     
       <div className="relative overflow-hidden rounded-2xl">
         <div 
           className="flex transition-transform duration-500 ease-in-out"
@@ -369,7 +370,7 @@ function FunFactsCarousel() {
         </div>
       </div>
 
-      {/* Flèches de navigation */}
+     
       <button
         onClick={prevSlide}
         className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all hover:scale-110 z-10"
@@ -388,7 +389,7 @@ function FunFactsCarousel() {
         </svg>
       </button>
 
-      {/* Indicateurs */}
+     
       <div className="flex justify-center mt-8 space-x-2">
         {facts.map((_, index) => (
           <button
@@ -406,5 +407,4 @@ function FunFactsCarousel() {
   );
 }
 
-// Animations custom Tailwind à ajouter dans tailwind.config.js :
-// 'bounce-slow', 'bounce-slow2', 'wiggle', 'wiggle2', 'fade-in'
+ 

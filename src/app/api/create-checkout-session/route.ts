@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { createClient } from "@/utils/supabase/server";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-06-30.basil",
@@ -7,64 +8,78 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { productId, items } = body;
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+    }
 
-    // Support pour un seul produit (compatibilité avec l'ancien code)
+    const { orderId, productId, items } = await req.json();
+
     if (productId) {
-      const product = await stripe.products.retrieve(productId, {
-        expand: ['default_price'],
-      });
-
-      if (!product.default_price) {
-        return NextResponse.json({ error: "Product has no default price" }, { status: 400 });
-      }
-
+      const product = await stripe.products.retrieve(productId, { expand: ['default_price'] });
       const price = product.default_price as Stripe.Price;
+
+      if (!price) {
+        return NextResponse.json({ error: "Produit sans prix" }, { status: 400 });
+      }
 
       const session = await stripe.checkout.sessions.create({
         mode: "payment",
         line_items: [{ price: price.id, quantity: 1 }],
-        success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/shop/success`,
+        success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/shop/cancel`,
+        metadata: {
+          order_id: orderId || 'single_product',
+          user_id: user.id,
+        },
       });
 
       return NextResponse.json({ url: session.url });
     }
 
-    // Support pour plusieurs articles (nouveau système de panier)
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return NextResponse.json({ error: "Missing items array" }, { status: 400 });
-    }
-
+    
     const lineItems = [];
 
-    for (const item of items) {
-      const product = await stripe.products.retrieve(item.productId, {
-        expand: ['default_price'],
-      });
-
-      if (!product.default_price) {
-        return NextResponse.json({ error: `Product ${item.productId} has no default price` }, { status: 400 });
+    for (const item of items || []) {
+      if (!item.stripe_product_id) {
+        return NextResponse.json({ error: `Produit "${item.name}" sans stripe_product_id` }, { status: 400 });
       }
 
-      const price = product.default_price as Stripe.Price;
-      lineItems.push({
-        price: price.id,
-        quantity: item.quantity,
-      });
+      // Pour les services, utiliser le stripe_price_id spécifique
+      if (item.stripe_price_id) {
+        lineItems.push({ price: item.stripe_price_id, quantity: item.quantity });
+      } else {
+        // Pour les produits, utiliser le prix par défaut
+        const product = await stripe.products.retrieve(item.stripe_product_id, { expand: ['default_price'] });
+        const price = product.default_price as Stripe.Price;
+
+        if (!price) {
+          return NextResponse.json({ error: `Pas de prix pour ${item.name}` }, { status: 400 });
+        }
+
+        lineItems.push({ price: price.id, quantity: item.quantity });
+      }
     }
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: lineItems,
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/shop/success`,
+      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/shop/cancel`,
+      metadata: {
+        order_id: orderId,
+        user_id: user.id,
+      },
     });
 
-    return NextResponse.json({ url: session.url });
-  } catch (error) {
-    console.error("Erreur lors de la création de la session:", error);
-    return NextResponse.json({ error: "Erreur lors de la création de la session" }, { status: 500 });
+    if (orderId) {
+      await supabase.from("orders").update({ stripe_session_id: session.id }).eq("id", orderId);
+    }
+
+    return NextResponse.json({ url: session.url, session_id: session.id, order_id: orderId });
+  } catch (err) {
+    console.error("Erreur session Stripe:", err);
+    return NextResponse.json({ error: "Erreur lors du paiement" }, { status: 500 });
   }
 }

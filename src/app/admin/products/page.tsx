@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
-import { Trash2, Plus, ShoppingCart, Upload, Image as ImageIcon } from "lucide-react";
+import { Trash2, Plus, ShoppingCart, Upload, Image as ImageIcon, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 interface Product {
@@ -55,6 +55,7 @@ export default function AdminProductsPage() {
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+  const [syncingStripe, setSyncingStripe] = useState(false);
 
   const fetchProducts = async () => {
     const { data, error } = await supabase
@@ -185,6 +186,8 @@ export default function AdminProductsPage() {
 
 
 
+  
+
   const deleteProduct = async () => {
     const id = productToDelete?.id;
     if (!id) return;
@@ -210,6 +213,7 @@ export default function AdminProductsPage() {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Gestion des Produits</h1>
+       
       </div>
 
      
@@ -248,7 +252,7 @@ export default function AdminProductsPage() {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="price" className="text-sm font-medium">Prix (€)</Label>
+                  <Label htmlFor="price" className="text-sm font-medium">Prix (AED)</Label>
                   <Input
                     id="price"
                     type="number"
@@ -389,7 +393,7 @@ export default function AdminProductsPage() {
                     <span className="text-gray-400 text-sm">Aucune catégorie</span>
                   )}
                 </TableCell>
-                <TableCell className="font-semibold">{product.price}€</TableCell>
+                <TableCell className="font-semibold">{product.price} AED</TableCell>
                 <TableCell>
                   {product.stripe_product_id ? (
                     <div className="flex items-center gap-2">

@@ -30,10 +30,13 @@ export async function POST(req: Request) {
    
     const stripePrice = await stripe.prices.create({
       unit_amount: Math.round(price), 
-      currency: "eur",
+      currency: "aed",
       product: product.id,
     });
 
+    await stripe.products.update(product.id, {
+      default_price: stripePrice.id,
+    });
     
     return NextResponse.json({
       productId: product.id,

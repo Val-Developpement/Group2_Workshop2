@@ -1,13 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { Separator } from '@/components/ui/separator';
-import { Minus, Plus, Trash2, ShoppingCart, X } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingCart, X, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function CartDrawer() {
+  const [isProcessing, setIsProcessing] = useState(false);
   const { 
     state, 
     removeItem, 
@@ -25,28 +27,66 @@ export default function CartDrawer() {
       return;
     }
 
+    setIsProcessing(true);
+
     try {
-      const response = await fetch("/api/create-checkout-session", {
+      
+      const orderResponse = await fetch("/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           items: state.items.map(item => ({
-            productId: item.stripe_product_id,
+            product_id: item.id,
+            stripe_product_id: item.stripe_product_id,
+            stripe_price_id: item.stripe_price_id,
+            name: item.name,
+            price: Math.round(item.price * 100), 
+            quantity: item.quantity,
+            image_url: item.image_url,
+          })),
+        }),
+      });
+
+      if (!orderResponse.ok) {
+        const errorData = await orderResponse.json();
+        toast.error(errorData.error || "Erreur lors de la création de la commande");
+        setIsProcessing(false);
+        return;
+      }
+
+      const { order_id } = await orderResponse.json();
+
+      
+      const checkoutResponse = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId: order_id,
+          items: state.items.map(item => ({
+            stripe_product_id: item.stripe_product_id,
+            stripe_price_id: item.stripe_price_id, 
             quantity: item.quantity,
           })),
         }),
       });
 
-      if (response.ok) {
-        const { url } = await response.json();
+      if (checkoutResponse.ok) {
+        const { url } = await checkoutResponse.json();
+        
+        clearCart();
         window.location.href = url;
       } else {
         toast.error("Erreur lors de la création de la session de paiement");
+        setIsProcessing(false);
       }
     } catch (error) {
+      console.error("Erreur lors du checkout:", error);
       toast.error("Erreur lors de l'achat");
+      setIsProcessing(false);
     }
   };
 
@@ -55,12 +95,21 @@ export default function CartDrawer() {
       
       <DrawerContent className="h-full w-[400px] ml-auto">
         
-        <div className="w-full h-full">
+        <div className="w-full h-full relative">
+          {isProcessing && (
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center">
+              <div className="text-center">
+                <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2 text-lime-500" />
+                <p className="text-sm text-gray-600">Préparation du paiement...</p>
+              </div>
+            </div>
+          )}
         <Button
               variant="ghost"
               size="sm"
               onClick={closeCart}
               className="h-8 w-8 p-0 mt-2 ml-2"
+              disabled={isProcessing}
             >
               <X className="h-4 w-4" />
             </Button>
@@ -82,7 +131,7 @@ export default function CartDrawer() {
                 <p className="text-gray-600 mb-4">
                   Ajoutez des produits à votre panier pour commencer vos achats.
                 </p>
-                <Button onClick={closeCart} variant="outline">
+                <Button onClick={closeCart} variant="outline" disabled={isProcessing}>
                   Continuer les achats
                 </Button>
               </div>
@@ -98,7 +147,8 @@ export default function CartDrawer() {
                       />
                       <div className="flex-1 min-w-0">
                         <h4 className="font-medium text-sm truncate">{item.name}</h4>
-                        <p className="text-gray-600 text-sm">{item.price}€</p>
+                        <p className="text-gray-600 text-sm">{item.price} AED</p>
+                       
                         
                         <div className="flex items-center justify-between mt-2">
                           <div className="flex items-center gap-2">
@@ -107,7 +157,7 @@ export default function CartDrawer() {
                               size="sm"
                               className="h-8 w-8 p-0"
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              disabled={item.quantity <= 1}
+                              disabled={item.quantity <= 1 || isProcessing}
                             >
                               <Minus className="h-3 w-3" />
                             </Button>
@@ -119,6 +169,7 @@ export default function CartDrawer() {
                               size="sm"
                               className="h-8 w-8 p-0"
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              disabled={isProcessing}
                             >
                               <Plus className="h-3 w-3" />
                             </Button>
@@ -126,13 +177,14 @@ export default function CartDrawer() {
                           
                           <div className="flex items-center gap-2">
                             <span className="font-medium text-sm">
-                              {(item.price * item.quantity).toFixed(2)}€
+                              {(item.price * item.quantity).toFixed(2)} AED
                             </span>
                             <Button
                               variant="ghost"
                               size="sm"
                               className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
                               onClick={() => removeItem(item.id)}
+                              disabled={isProcessing}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -148,7 +200,7 @@ export default function CartDrawer() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="font-medium">Total ({getTotalItems()} article{getTotalItems() > 1 ? 's' : ''})</span>
-                    <span className="text-xl font-bold">{getTotalPrice().toFixed(2)}€</span>
+                    <span className="text-xl font-bold">{getTotalPrice().toFixed(2)} AED</span>
                   </div>
 
                   <div className="flex gap-2">
@@ -156,14 +208,23 @@ export default function CartDrawer() {
                       variant="outline"
                       onClick={clearCart}
                       className="flex-1"
+                      disabled={isProcessing}
                     >
                       Vider le panier
                     </Button>
                     <Button
                       onClick={handleCheckout}
                       className="flex-1 bg-lime-500 hover:bg-lime-600 text-white"
+                      disabled={isProcessing}
                     >
-                      Passer la commande
+                      {isProcessing ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Traitement en cours...
+                        </>
+                      ) : (
+                        'Passer la commande'
+                      )}
                     </Button>
                   </div>
                 </div>

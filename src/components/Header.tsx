@@ -59,12 +59,15 @@ export default function Header() {
 
         
         <div className="hidden md:flex space-x-8 text-lg font-semibold">
+
           <Link href="/" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">{t.home}</Link>
           <Link href="/shop" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">{t.shop}</Link>
           <Link href="/blog" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">{t.blog}</Link>
           <Link href="/quiz-animal" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">{t.animalQuiz}</Link>
           <Link href="/contact" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">{t.contact}</Link>
           <Link href="/signaler-maltraitance" className="text-gray-800 hover:text-red-700 transition-colors hover:underline underline-offset-8 font-medium">{t.reportCase}</Link>
+
+
         </div>
 
     
@@ -86,13 +89,15 @@ export default function Header() {
             </button>
 
           {loading ? (
+
             <Button variant='outline' disabled className="rounded-full px-6 py-2 text-lg bg-lime-100 text-lime-700">
               {t.loading}
+
             </Button>
           ) : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant='outline' className="rounded-full px-6 py-2 text-lg bg-lime-100 text-lime-700">
+                <Button variant='outline' className=" bg-lime-100 text-lime-700">
                   {user.firstName} {user.lastName}
                 </Button>
               </DropdownMenuTrigger>
@@ -124,9 +129,10 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
+
             <Button variant='default' className="rounded-full bg-lime-500 hover:bg-lime-600 text-white px-8 py-2 text-lg font-bold shadow-md transition-transform hover:scale-105" onClick={() => router.push('/login')}>
               {t.login}
-            </Button>
+
           )}
         </div>
 
