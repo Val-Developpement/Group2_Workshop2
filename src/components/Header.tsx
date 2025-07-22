@@ -19,6 +19,8 @@ import {
   import { useCart } from '@/contexts/CartContext';
   import { signOutAction } from '@/app/action';
   import CartDrawer from './CartDrawer';
+  import LanguageSwitcher from './LanguageSwitcher';
+  import { useTranslation } from '@/hooks/useTranslation';
 import { ShoppingCart } from "lucide-react";
 
 
@@ -27,6 +29,7 @@ export default function Header() {
     const router = useRouter();
     const { user, loading } = useUser();
     const { getTotalItems, toggleCart } = useCart();
+    const { t } = useTranslation();
     const [menuOpen, setMenuOpen] = useState(false);
     const [isSigningOut, setIsSigningOut] = useState(false);
 
@@ -56,17 +59,19 @@ export default function Header() {
 
         
         <div className="hidden md:flex space-x-8 text-lg font-semibold">
-          <Link href="/" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Accueil</Link>
-          <Link href="/shop" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Boutique</Link>
-          <Link href="/blog" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Blog</Link>
-          <Link href="/quiz-animal" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Quiz Animal</Link>
-          <Link href="/contact" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">Contact</Link>
-          <Link href="/signaler-maltraitance" className="text-gray-800 hover:text-red-700 transition-colors hover:underline underline-offset-8 font-medium">Signaler un cas</Link>
+          <Link href="/" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">{t.home}</Link>
+          <Link href="/shop" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">{t.shop}</Link>
+          <Link href="/blog" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">{t.blog}</Link>
+          <Link href="/quiz-animal" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">{t.animalQuiz}</Link>
+          <Link href="/contact" className="text-gray-800 hover:text-lime-600 transition-colors hover:underline underline-offset-8">{t.contact}</Link>
+          <Link href="/signaler-maltraitance" className="text-gray-800 hover:text-red-700 transition-colors hover:underline underline-offset-8 font-medium">{t.reportCase}</Link>
         </div>
 
     
-        <div className="flex items-center space-x-4">
-         
+                <div className="flex items-center space-x-4">
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+          
           <button 
               onClick={toggleCart}
               className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -82,7 +87,7 @@ export default function Header() {
 
           {loading ? (
             <Button variant='outline' disabled className="rounded-full px-6 py-2 text-lg bg-lime-100 text-lime-700">
-              Chargement...
+              {t.loading}
             </Button>
           ) : user ? (
             <DropdownMenu>
@@ -92,18 +97,18 @@ export default function Header() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+                <DropdownMenuLabel>{t.myAccount}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <Link href='/profile' passHref>
                     <DropdownMenuItem className='cursor-pointer'>
-                      Mon profil
+                      {t.myProfile}
                     </DropdownMenuItem>
                   </Link>
                   {user.isAdmin && (
                     <Link href='/admin' passHref>
                       <DropdownMenuItem className='cursor-pointer'>
-                        Pannel Admin
+                        {t.adminPanel}
                       </DropdownMenuItem>
                     </Link>
                   )}
@@ -114,13 +119,13 @@ export default function Header() {
                   disabled={isSigningOut}
                   className='cursor-pointer text-red-600 dark:text-red-400'
                 >
-                  {isSigningOut ? 'Déconnexion...' : 'Déconnexion'}
+                  {isSigningOut ? `${t.logout}...` : t.logout}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <Button variant='default' className="rounded-full bg-lime-500 hover:bg-lime-600 text-white px-8 py-2 text-lg font-bold shadow-md transition-transform hover:scale-105" onClick={() => router.push('/login')}>
-              Se connecter
+              {t.login}
             </Button>
           )}
         </div>
