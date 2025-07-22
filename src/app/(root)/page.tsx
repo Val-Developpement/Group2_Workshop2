@@ -4,10 +4,13 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useTranslation } from '@/hooks/useTranslation';
 // import Footer from '@/components/Footer'; // Footer supprimé ici
 import { useState } from 'react';
     
 export default function Home() {
+  const { t } = useTranslation();
+  
   return (
     <>
       <main className="min-h-screen">
@@ -25,19 +28,21 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/60 z-10"></div>
           <div className="relative z-20 flex flex-col items-center justify-center w-full h-full text-center px-4">
             <h2 className="text-3xl md:text-5xl font-bold text-lime-300 mb-4 tracking-wider" style={{fontFamily: 'var(--font-caveat)'}}>
-              Bienvenue sur APwAP !
+              {t.welcomeTitle}
             </h2>
             <h1 className="text-6xl md:text-8xl font-extrabold text-white mb-6 drop-shadow-lg" style={{fontFamily: 'var(--font-caveat)'}}>
-              Le bonheur <span className="text-lime-200">à quatre pattes</span>
+              {t.welcomeSubtitle}
             </h1>
             <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto font-semibold" style={{fontFamily: 'var(--font-inter)'}}>
-              Ici, chaque chien remue la queue et chaque chat ronronne de plaisir.<br/>
-              Découvre des conseils, des services et des histoires pour rendre ton compagnon heureux, chaque jour !
+              {t.welcomeDescription}
             </p>
 
-            <Button size="lg" className="bg-lime-400 hover:bg-lime-500 text-gray-900" style={{fontFamily: 'var(--font-inter)'}}>
-              Découvrir la sélection
-            </Button>
+            <Link href="/shop">
+              <Button size="lg" className="bg-lime-400 hover:bg-lime-500 text-gray-900 font-semibold px-8 py-4 text-lg md:text-xl shadow-lg transition-transform hover:scale-105" style={{fontFamily: 'var(--font-inter)'}}>
+                {t.discoverShop}
+              </Button>
+            </Link>
+
           </div>
         </section>
 
@@ -45,8 +50,8 @@ export default function Home() {
         <section className="py-16 bg-gradient-to-r from-blue-50 to-lime-50">
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Le savais-tu ?</h2>
-              <p className="text-lg text-gray-600">Des anecdotes surprenantes sur nos compagnons à quatre pattes</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t.didYouKnow}</h2>
+              <p className="text-lg text-gray-600">{t.didYouKnowSubtitle}</p>
             </div>
             
             <FunFactsCarousel />
@@ -63,11 +68,10 @@ export default function Home() {
                 </svg>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Notre Framework 360°
+                {t.framework360Title}
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Une approche holistique et scientifique du bien-être animal, 
-                développée par nos experts pour garantir l'épanouissement de votre compagnon.
+                {t.framework360Subtitle}
               </p>
             </div>
 
@@ -81,22 +85,22 @@ export default function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Alimentation</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{t.nutritionTitle}</h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    Nutrition personnalisée basée sur l'âge, la race, l'activité et les besoins spécifiques de votre animal.
+                    {t.nutritionDescription}
                   </p>
                   <ul className="space-y-2 text-sm text-gray-500">
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3"></div>
-                      Analyse nutritionnelle complète
+                      {t.nutritionFeature1}
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3"></div>
-                      Recommandations sur-mesure
+                      {t.nutritionFeature2}
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3"></div>
-                      Suivi et ajustements
+                      {t.nutritionFeature3}
                     </li>
                   </ul>
                 </div>
@@ -111,22 +115,22 @@ export default function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Exercice</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{t.exerciseTitle}</h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    Programme d'activité physique et mentale adapté pour maintenir la forme et l'équilibre psychologique.
+                    {t.exerciseDescription}
                   </p>
                   <ul className="space-y-2 text-sm text-gray-500">
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></div>
-                      Évaluation de la condition physique
+                      {t.exerciseFeature1}
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></div>
-                      Exercices ciblés et progressifs
+                      {t.exerciseFeature2}
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></div>
-                      Stimulation cognitive
+                      {t.exerciseFeature3}
                     </li>
                   </ul>
                 </div>
@@ -141,22 +145,22 @@ export default function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Santé</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{t.healthTitle}</h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    Suivi médical préventif et coordination avec les professionnels de santé vétérinaire.
+                    {t.healthDescription}
                   </p>
                   <ul className="space-y-2 text-sm text-gray-500">
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-red-500 rounded-full mr-3"></div>
-                      Prévention et dépistage
+                      {t.healthFeature1}
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-red-500 rounded-full mr-3"></div>
-                      Coordination vétérinaire
+                      {t.healthFeature2}
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-red-500 rounded-full mr-3"></div>
-                      Suivi personnalisé
+                      {t.healthFeature3}
                     </li>
                   </ul>
                 </div>
@@ -201,22 +205,22 @@ export default function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Environnement</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{t.environmentTitle}</h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    Optimisation de l'espace de vie pour créer un environnement sécurisé et stimulant.
+                    {t.environmentDescription}
                   </p>
                   <ul className="space-y-2 text-sm text-gray-500">
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-3"></div>
-                      Audit de l'habitat
+                      {t.environmentFeature1}
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-3"></div>
-                      Aménagements conseillés
+                      {t.environmentFeature2}
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-3"></div>
-                      Enrichissement environnemental
+                      {t.environmentFeature3}
                     </li>
                   </ul>
                 </div>
@@ -231,22 +235,22 @@ export default function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Relation</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{t.relationshipTitle}</h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    Renforcement du lien unique humain-animal par la compréhension mutuelle et la communication.
+                    {t.relationshipDescription}
                   </p>
                   <ul className="space-y-2 text-sm text-gray-500">
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-pink-500 rounded-full mr-3"></div>
-                      Communication inter-espèces
+                      {t.relationshipFeature1}
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-pink-500 rounded-full mr-3"></div>
-                      Renforcement du lien
+                      {t.relationshipFeature2}
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-pink-500 rounded-full mr-3"></div>
-                      Moments de qualité
+                      {t.relationshipFeature3}
                     </li>
                   </ul>
                 </div>
@@ -256,11 +260,12 @@ export default function Home() {
             
             <div className="text-center">
               <p className="text-lg text-gray-600 mb-8">
-                Chaque pilier de notre framework est interconnecté pour garantir une approche complète et efficace.
+                {t.frameworkConclusion}
               </p>
-              <Button size="lg" className="bg-lime-500 hover:bg-lime-600">
-                Découvrir notre méthode
-              </Button>
+
+              <Button size="lg" className="bg-lime-500 hover:bg-lime-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all">
+                {t.discoverMethod}
+
             </div>
           </div>
         </section>
@@ -269,10 +274,10 @@ export default function Home() {
         <section className="py-20 bg-gradient-to-r from-pink-400 to-blue-400 text-white animate-fade-in">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 drop-shadow-lg">
-              Prêt à faire sourire votre compagnon ? 😺🐶
+{t.ctaTitle}
             </h2>
             <p className="text-xl mb-8 text-blue-50">
-              Rejoignez la communauté APwAP et découvrez une nouvelle façon de prendre soin de votre animal, dans la joie et la bonne humeur !
+{t.ctaDescription}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" variant="secondary" className="bg-white text-pink-600 hover:bg-gray-100">
@@ -292,36 +297,37 @@ export default function Home() {
 
 function FunFactsCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { t } = useTranslation();
   
   const facts = [
     {
       emoji: "🐶",
-      title: "Super-mémoire canine",
-      fact: "Un chien peut reconnaître et mémoriser jusqu'à 250 mots différents. Certains Border Collies peuvent même apprendre plus de 1000 mots !",
+      title: t.dogMemoryTitle,
+      fact: t.dogMemoryText,
       color: "from-yellow-400 to-orange-400"
     },
     {
       emoji: "🐱", 
-      title: "Maître du sommeil",
-      fact: "Les chats dorment en moyenne 15h par jour. Ils passent donc 70% de leur vie à dormir... et on les envie !",
+      title: t.catSleepTitle,
+      fact: t.catSleepText,
       color: "from-pink-400 to-purple-400"
     },
     {
       emoji: "🐾",
-      title: "Ronronnement thérapeutique", 
-      fact: "Le ronronnement du chat vibre entre 20-50 Hz, fréquence qui favorise la guérison des os et réduit le stress chez l'humain.",
+      title: t.purringTitle, 
+      fact: t.purringText,
       color: "from-blue-400 to-cyan-400"
     },
     {
       emoji: "🦴",
-      title: "Langage de la queue",
-      fact: "Un chien qui remue la queue vers la droite est content, vers la gauche il est anxieux. La science des émotions canines !",
+      title: t.tailLanguageTitle,
+      fact: t.tailLanguageText,
       color: "from-green-400 to-lime-400"
     },
     {
       emoji: "👃",
-      title: "Super-odorat",
-      fact: "Le nez d'un chien contient 300 millions de récepteurs olfactifs (vs 6 millions chez l'humain). Il peut sentir une cuillère de sucre dans une piscine !",
+      title: t.superSmellTitle,
+      fact: t.superSmellText,
       color: "from-red-400 to-pink-400"
     }
   ];
