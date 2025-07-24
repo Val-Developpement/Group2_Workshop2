@@ -56,7 +56,7 @@ Ce projet est une plateforme web dédiée à la cause animale, développée avec
 
 Pour contribuer, merci de suivre la convention suivante pour les branches :
 - `main` : branche de production
-- `dev` : branche de développement
+- `develop` : branche de développement
 - `feature/[nom]` : nouvelle fonctionnalité
 - `fix/[nom]` : correction de bug
 
